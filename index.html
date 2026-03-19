@@ -63,12 +63,44 @@ body {
     transform:scale(1.05);
 }
 
-/* NEWS */
-.news {
+/* NEWS LIST STYLE */
+.news-list {
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+    margin-top:20px;
+}
+
+.news-item {
+    display:flex;
+    align-items:center;
+    gap:15px;
     background:white;
-    padding:15px;
-    margin:10px 0;
+    padding:10px;
     border-radius:10px;
+    transition:0.3s;
+}
+
+.news-item:hover {
+    background:#eaeaea;
+}
+
+.news-item img {
+    width:120px;
+    height:80px;
+    object-fit:cover;
+    border-radius:8px;
+}
+
+.news-text h3 {
+    margin:0;
+    font-size:16px;
+}
+
+.news-text p {
+    margin:5px 0 0;
+    font-size:13px;
+    color:gray;
 }
 
 /* MOBILE */
@@ -85,6 +117,16 @@ body {
     .center-text h2 {
         font-size:16px;
     }
+
+    .news-item {
+        flex-direction:column;
+        align-items:flex-start;
+    }
+
+    .news-item img {
+        width:100%;
+        height:150px;
+    }
 }
 </style>
 
@@ -94,7 +136,6 @@ body {
 
 <!-- HEADER -->
 <div class="header">
-
     <h2>CricketMinutes</h2>
 
     <div class="center-text">
@@ -104,7 +145,6 @@ body {
     </div>
 
     <img src="logo.png" width="70">
-
 </div>
 
 <!-- TABS -->
@@ -122,34 +162,53 @@ body {
 <div style="padding:30px;">
     <h2>📰 Latest Cricket News</h2>
 
-    <div class="news">🔥Virat Kohli has arrived in Bengaluru as of March 18, 2026, to join the Royal Challengers Bengaluru (RCB) ahead of the IPL 2026 season.</div>
-    <div class="news">🏆IPL 2026 captains and coaches meeting is scheduled to be held on March 25, 2026, in Mumbai </div>
-    <div class="news">⚡Ishan Kishan has been appointed as the interim captain of Sunrisers Hyderabad (SRH) for the start of IPL 2026</div>
+    <div class="news-list">
+
+        <div class="news-item">
+            <img src="https://www.instagram.com/p/DWBp082ATJu/?utm_source=ig_web_button_share_sheet&igsh=MzRlODBiNWFlZA==">
+            <div class="news-text">
+                <h3>irat Kohli has arrived in Bengaluru as of March 18, 2026, to join the Royal Challengers Bengaluru (RCB) ahead of the IPL 2026 season</h3>
+                <p>March 18, 2026 • RCB</p>
+            </div>
+        </div>
+
+        <div class="news-item">
+            <img src="https://share.google/kfIhWQ1TA7gs5HPRP">
+            <div class="news-text">
+                <h3>IPL 2026 captains and coaches meeting is scheduled to be held on March 25, 2026, in Mumbai.</h3>
+                <p>March 25, 2026 • BCCI</p>
+            </div>
+        </div>
+
+        <div class="news-item">
+            <img src="https://cdn1.wionews.com/prod/wion/images/2026/20260318/image-1773840761928.jpg?rect=(0,0,1200,900)&imwidth=800&imheight=600&format=webp&quality=medium">
+            <div class="news-text">
+                <h3>shan Kishan has been appointed as the interim captain of Sunrisers Hyderabad (SRH) for the start of IPL 2026</h3>
+                <p>IPL 2026 • SRH Team Update</p>
+            </div>
+        </div>
+
+    </div>
 </div>
 
 <!-- SCRIPT -->
 <script>
 
-// MATCH DATA (DYNAMIC)
 let matches = [
     {type:"live", team:"India vs Australia", score:"India 200/5 (20 overs)"},
     {type:"live", team:"England vs Pakistan", score:"England 150/3 (15 overs)"},
-
     {type:"upcoming", team:"WI-W vs AUS-W", score:"Tomorrow 4:00 AM"},
     {type:"upcoming", team:"India vs South Africa", score:"Today 7:00 PM"},
-
     {type:"result", team:"NZ vs SA", score:"NZ won by 68 runs"},
     {type:"result", team:"SA-W vs NZ-W", score:"SA-W won by 18 runs"}
 ];
 
 let container = document.getElementById("matches");
 
-// LOAD MATCHES
 function loadMatches(filter="all") {
     container.innerHTML = "";
 
     matches.forEach(match => {
-
         if(filter === "all" || match.type === filter){
 
             let label = "";
@@ -168,12 +227,10 @@ function loadMatches(filter="all") {
     });
 }
 
-// TAB FILTER
 function showTab(type){
     loadMatches(type);
 }
 
-// AUTO LIVE SCORE CHANGE
 function updateLiveScores(){
     let randomScores = [
         "India 180/4 (18 overs)",
@@ -193,7 +250,6 @@ function updateLiveScores(){
 
 setInterval(updateLiveScores,3000);
 
-// INITIAL LOAD
 loadMatches();
 
 </script>
