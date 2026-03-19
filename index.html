@@ -1,7 +1,25 @@
 <!DOCTYPE html>
 <html>
 <head>
+
 <title>CricketMinutes</title>
+
+<!-- LOGO IN TAB -->
+<link rel="icon" type="image/png" href="logo.png">
+
+<!-- SEO -->
+<meta name="description" content="Live cricket scores, news and updates - CricketMinutes">
+
+<!-- GOOGLE LOGO STRUCTURE -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "CricketMinutes",
+  "url": "https://susindhar15.github.io/cricketminutes-web/",
+  "logo": "https://susindhar15.github.io/cricketminutes-web/logo.png"
+}
+</script>
 
 <style>
 body {
@@ -42,7 +60,7 @@ body {
     background:white;
 }
 
-/* CARDS */
+/* MATCH CARDS */
 #matches {
     display:flex;
     flex-wrap:wrap;
@@ -63,7 +81,7 @@ body {
     transform:scale(1.05);
 }
 
-/* NEWS LIST STYLE */
+/* NEWS */
 .news-list {
     display:flex;
     flex-direction:column;
