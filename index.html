@@ -19,135 +19,60 @@
 </script>
 
 <style>
-body {
-    margin:0;
-    font-family:Arial;
-    background:#eef2f7;
-}
+body {margin:0;font-family:Arial;background:#eef2f7;}
 
 .header {
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:15px 25px;
-    background:white;
-    position:relative;
-    box-shadow:0 2px 5px rgba(0,0,0,0.1);
+display:flex;justify-content:space-between;align-items:center;
+padding:15px 25px;background:white;position:relative;
+box-shadow:0 2px 5px rgba(0,0,0,0.1);
 }
 
-.center-text {
-    position:absolute;
-    left:50%;
-    transform:translateX(-50%);
-}
+.center-text {position:absolute;left:50%;transform:translateX(-50%);}
 
-.tabs {
-    display:flex;
-    gap:10px;
-    padding:15px 25px;
-}
+.tabs {display:flex;gap:10px;padding:15px 25px;}
 
 .tabs button {
-    padding:8px 15px;
-    border-radius:20px;
-    border:1px solid #ccc;
-    cursor:pointer;
-    background:white;
+padding:8px 15px;border-radius:20px;border:1px solid #ccc;
+cursor:pointer;background:white;font-weight:bold;
 }
 
-/* MATCH */
-#matches {
-    display:flex;
-    flex-wrap:wrap;
-    gap:15px;
-    padding:20px;
-}
+.tabs button:hover {background:#007bff;color:white;}
+
+#matches {display:flex;flex-wrap:wrap;gap:15px;padding:20px;}
 
 .card {
-    width:250px;
-    background:white;
-    padding:15px;
-    border-radius:15px;
-    box-shadow:0 4px 12px rgba(0,0,0,0.08);
-    transition:0.3s;
+width:250px;background:white;padding:15px;border-radius:15px;
+box-shadow:0 4px 12px rgba(0,0,0,0.08);transition:0.3s;
 }
 
-.card:hover {
-    transform:translateY(-8px) scale(1.03);
-    box-shadow:0 8px 20px rgba(0,0,0,0.15);
-}
+.card:hover {transform:translateY(-8px) scale(1.03);}
 
-/* NEWS */
-.news-list {
-    display:flex;
-    flex-direction:column;
-    gap:15px;
-    margin-top:20px;
-}
+.news-list {display:flex;flex-direction:column;gap:15px;margin-top:20px;}
 
 .news-item {
-    display:flex;
-    align-items:center;
-    gap:15px;
-    background:white;
-    padding:12px;
-    border-radius:12px;
-    transition:0.3s;
-    cursor:pointer;
+display:flex;align-items:center;gap:15px;background:white;
+padding:12px;border-radius:12px;transition:0.3s;cursor:pointer;
 }
 
-.news-item:hover {
-    transform:scale(1.02);
-    background:#f5f7fb;
-}
+.news-item:hover {transform:scale(1.02);background:#f5f7fb;}
 
 .news-item img {
-    width:120px;
-    height:80px;
-    object-fit:cover;
-    border-radius:8px;
+width:120px;height:80px;object-fit:cover;border-radius:8px;
 }
 
-.news-text h3 {
-    margin:0;
-    font-size:16px;
-}
+.news-text h3 {margin:0;font-size:16px;}
+.news-text p {margin:5px 0 0;font-size:13px;color:gray;}
 
-.news-text p {
-    margin:5px 0 0;
-    font-size:13px;
-    color:gray;
-}
-
-button {
-    margin-top:5px;
-    padding:5px 10px;
-    border:none;
-    background:#007bff;
-    color:white;
-    border-radius:5px;
-    cursor:pointer;
+.read-btn {
+margin-top:5px;padding:5px 10px;border:none;
+background:#007bff;color:white;border-radius:5px;cursor:pointer;
 }
 
 @media (max-width:768px){
-    #matches {
-        flex-direction:column;
-        align-items:center;
-    }
-
-    .card {
-        width:90%;
-    }
-
-    .news-item {
-        flex-direction:column;
-        align-items:flex-start;
-    }
-
-    .news-item img {
-        width:100%;
-        height:150px;
-    }
+#matches {flex-direction:column;align-items:center;}
+.card {width:90%;}
+.news-item {flex-direction:column;align-items:flex-start;}
+.news-item img {width:100%;height:150px;}
 }
 </style>
 
@@ -155,137 +80,126 @@ button {
 
 <body>
 
-<!-- HEADER -->
 <div class="header">
-    <h2>CricketMinutes</h2>
+<h2>CricketMinutes</h2>
 
-    <div class="center-text">
-        <h2>
-            Welcome to <span style="color:#007bff;">Cricket World🏏🌍</span>
-        </h2>
-    </div>
-
-    <img src="logo.png" width="70">
+<div class="center-text">
+<h2>Welcome to <span style="color:#007bff;">Cricket World🏏🌍</span></h2>
 </div>
 
-<!-- TABS -->
+<img src="logo.png" width="70">
+</div>
+
 <div class="tabs">
-    <button onclick="showTab('all')">Matches</button>
-    <button onclick="showTab('live')">Live</button>
-    <button onclick="showTab('upcoming')">Upcoming</button>
-    <button onclick="showTab('result')">Results</button>
+<button onclick="showTab('all')">Matches</button>
+<button onclick="showTab('live')">Live</button>
+<button onclick="showTab('upcoming')">Upcoming</button>
+<button onclick="showTab('result')">Results</button>
 </div>
 
 <div id="matches"></div>
 
-<!-- NEWS -->
 <div style="padding:30px;">
 <h2>📰 Latest Cricket News</h2>
 
 <div class="news-list">
 
-<!-- NEWS 1 -->
-<div class="news-item" onclick="openNews('news1.html')">
+<div class="news-item" onclick="openNews()">
 <img src="https://upload.wikimedia.org/wikipedia/commons/8/84/Cricket_match_in_Mumbai.jpg">
 <div class="news-text">
 <h3>Shivam Dube joins CSK ahead of IPL 2026</h3>
 <p>March 18, 2026 • BCCI</p>
-<button>Read more →</button>
+<button class="read-btn">Read more →</button>
 </div>
 </div>
 
-<!-- NEWS 2 -->
-<div class="news-item" onclick="openNews('news1.html')">
+<div class="news-item" onclick="openNews()">
 <img src="https://upload.wikimedia.org/wikipedia/commons/1/15/Virat_Kohli.jpg">
 <div class="news-text">
 <h3>Virat Kohli joins RCB ahead of IPL 2026</h3>
 <p>March 18, 2026 • RCB</p>
-<button>Read more →</button>
+<button class="read-btn">Read more →</button>
 </div>
 </div>
 
-<!-- NEWS 3 -->
-<div class="news-item" onclick="openNews('news1.html')">
+<div class="news-item" onclick="openNews()">
 <img src="https://upload.wikimedia.org/wikipedia/commons/8/84/Cricket_match_in_Mumbai.jpg">
 <div class="news-text">
 <h3>IPL 2026 captains meeting in Mumbai</h3>
 <p>March 25, 2026 • BCCI</p>
-<button>Read more →</button>
+<button class="read-btn">Read more →</button>
 </div>
 </div>
 
-<!-- NEWS 4 -->
-<div class="news-item" onclick="openNews('news1.html')">
-<img src="https://upload.wikimedia.org/wikipedia/commons/3/3f/Ishan_Kishan.jpg">
+<div class="news-item" onclick="openNews()">
+<img src="https://cdn1.wionews.com/prod/wion/images/2026/20260318/image-1773840761928.jpg?rect=(0,0,1200,900)&imwidth=800&imheight=600&format=webp&quality=medium">
 <div class="news-text">
 <h3>Ishan Kishan becomes SRH captain</h3>
 <p>IPL 2026 • SRH</p>
-<button>Read more →</button>
+<button class="read-btn">Read more →</button>
 </div>
 </div>
 
 </div>
 </div>
 
-<!-- SCRIPT -->
 <script>
 
-function openNews(page){
-    window.location.href = page;
+function openNews(){
+alert("News page coming soon 🔥");
 }
 
 let matches = [
-    {type:"live", team:"India vs Australia", score:"India 200/5 (20 overs)"},
-    {type:"live", team:"England vs Pakistan", score:"England 150/3 (15 overs)"},
-    {type:"upcoming", team:"WI-W vs AUS-W", score:"Tomorrow 4:00 AM"},
-    {type:"upcoming", team:"India vs South Africa", score:"Today 7:00 PM"},
-    {type:"result", team:"NZ vs SA", score:"NZ won by 68 runs"},
-    {type:"result", team:"SA-W vs NZ-W", score:"SA-W won by 18 runs"}
+{type:"live", team:"India vs Australia", score:"India 200/5 (20 overs)"},
+{type:"live", team:"England vs Pakistan", score:"England 150/3 (15 overs)"},
+{type:"upcoming", team:"WI-W vs AUS-W", score:"Tomorrow 4:00 AM"},
+{type:"upcoming", team:"India vs South Africa", score:"Today 7:00 PM"},
+{type:"result", team:"NZ vs SA", score:"NZ won by 68 runs"},
+{type:"result", team:"SA-W vs NZ-W", score:"SA-W won by 18 runs"}
 ];
 
 let container = document.getElementById("matches");
 
 function loadMatches(filter="all") {
-    container.innerHTML = "";
+container.innerHTML = "";
 
-    matches.forEach(match => {
-        if(filter === "all" || match.type === filter){
+matches.forEach(match => {
+if(filter === "all" || match.type === filter){
 
-            let label = "";
-            if(match.type === "live") label = "🔴 LIVE";
-            if(match.type === "upcoming") label = "UPCOMING";
-            if(match.type === "result") label = "RESULT";
+let label = "";
+if(match.type === "live") label = "🔴 LIVE";
+if(match.type === "upcoming") label = "UPCOMING";
+if(match.type === "result") label = "RESULT";
 
-            container.innerHTML += `
-                <div class="card ${match.type}">
-                    <p style="color:${match.type==='live'?'red':'gray'};">${label}</p>
-                    <h3>${match.team}</h3>
-                    <p>${match.score}</p>
-                </div>
-            `;
-        }
-    });
+container.innerHTML += `
+<div class="card ${match.type}">
+<p style="color:${match.type==='live'?'red':'gray'};">${label}</p>
+<h3>${match.team}</h3>
+<p>${match.score}</p>
+</div>`;
+}
+});
 }
 
 function showTab(type){
-    loadMatches(type);
+loadMatches(type);
 }
 
 function updateLiveScores(){
-    let randomScores = [
-        "India 180/4 (18 overs)",
-        "India 200/5 (20 overs)",
-        "Australia 120/3 (12 overs)",
-        "England 170/6 (18 overs)"
-    ];
+let randomScores = [
+"India 180/4 (18 overs)",
+"India 200/5 (20 overs)",
+"Australia 120/3 (12 overs)",
+"England 170/6 (18 overs)"
+];
 
-    let liveCards = document.querySelectorAll(".live");
+let liveCards = document.querySelectorAll(".live");
 
-    liveCards.forEach(card => {
-        let score = card.querySelector("p:last-child");
-        let random = Math.floor(Math.random()*randomScores.length);
-        score.innerText = randomScores[random];
-    });
+liveCards.forEach(card => {
+let score = card.querySelector("p:last-child");
+let random = Math.floor(Math.random()*randomScores.length);
+score.innerText = randomScores[random];
+});
 }
 
 setInterval(updateLiveScores,3000);
