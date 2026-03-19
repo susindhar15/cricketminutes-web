@@ -4,13 +4,10 @@
 
 <title>CricketMinutes</title>
 
-<!-- LOGO IN TAB -->
 <link rel="icon" type="image/png" href="logo.png">
 
-<!-- SEO -->
 <meta name="description" content="Live cricket scores, news and updates - CricketMinutes">
 
-<!-- GOOGLE LOGO STRUCTURE -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -28,7 +25,6 @@ body {
     background:#eef2f7;
 }
 
-/* HEADER */
 .header {
     display:flex;
     justify-content:space-between;
@@ -45,7 +41,6 @@ body {
     transform:translateX(-50%);
 }
 
-/* BUTTONS */
 .tabs {
     display:flex;
     gap:10px;
@@ -60,7 +55,7 @@ body {
     background:white;
 }
 
-/* MATCH CARDS */
+/* MATCH */
 #matches {
     display:flex;
     flex-wrap:wrap;
@@ -73,12 +68,13 @@ body {
     background:white;
     padding:15px;
     border-radius:15px;
-    box-shadow:0 2px 8px rgba(0,0,0,0.1);
+    box-shadow:0 4px 12px rgba(0,0,0,0.08);
     transition:0.3s;
 }
 
 .card:hover {
-    transform:scale(1.05);
+    transform:translateY(-8px) scale(1.03);
+    box-shadow:0 8px 20px rgba(0,0,0,0.15);
 }
 
 /* NEWS */
@@ -94,13 +90,15 @@ body {
     align-items:center;
     gap:15px;
     background:white;
-    padding:10px;
-    border-radius:10px;
+    padding:12px;
+    border-radius:12px;
     transition:0.3s;
+    cursor:pointer;
 }
 
 .news-item:hover {
-    background:#eaeaea;
+    transform:scale(1.02);
+    background:#f5f7fb;
 }
 
 .news-item img {
@@ -121,7 +119,16 @@ body {
     color:gray;
 }
 
-/* MOBILE */
+button {
+    margin-top:5px;
+    padding:5px 10px;
+    border:none;
+    background:#007bff;
+    color:white;
+    border-radius:5px;
+    cursor:pointer;
+}
+
 @media (max-width:768px){
     #matches {
         flex-direction:column;
@@ -130,10 +137,6 @@ body {
 
     .card {
         width:90%;
-    }
-
-    .center-text h2 {
-        font-size:16px;
     }
 
     .news-item {
@@ -173,52 +176,63 @@ body {
     <button onclick="showTab('result')">Results</button>
 </div>
 
-<!-- MATCHES -->
 <div id="matches"></div>
 
 <!-- NEWS -->
 <div style="padding:30px;">
-    <h2>📰 Latest Cricket News</h2>
+<h2>📰 Latest Cricket News</h2>
 
-    <div class="news-list"></div>
+<div class="news-list">
 
-    <div class="news-item">
-        <img src="https://x.com/ChennaiIPL/status/2034282862946734101?s=20?w=400">
-            <div class="news-text">
-                <h3>Shivam Dube joins the CSK ahead Roar of the Lion coming on march 22 .</h3>
-                <p>March 18, 2026 • BCCI</p>
-            </div>
-        </div>
+<!-- NEWS 1 -->
+<div class="news-item" onclick="openNews('news1.html')">
+<img src="https://upload.wikimedia.org/wikipedia/commons/8/84/Cricket_match_in_Mumbai.jpg">
+<div class="news-text">
+<h3>Shivam Dube joins CSK ahead of IPL 2026</h3>
+<p>March 18, 2026 • BCCI</p>
+<button>Read more →</button>
+</div>
+</div>
 
-        <div class="news-item">
-            <img src="https://share.google/Ofa2ItiXfgEo1YYkY?w=400">
-            <div class="news-text">
-                <h3>Virat Kohli has arrived in Bengaluru as of March 18, 2026, to join the Royal Challengers Bengaluru (RCB) ahead of the IPL 2026 season</h3>
-                <p>March 18, 2026 • RCB</p>
-            </div>
-        </div>
+<!-- NEWS 2 -->
+<div class="news-item" onclick="openNews('news1.html')">
+<img src="https://upload.wikimedia.org/wikipedia/commons/1/15/Virat_Kohli.jpg">
+<div class="news-text">
+<h3>Virat Kohli joins RCB ahead of IPL 2026</h3>
+<p>March 18, 2026 • RCB</p>
+<button>Read more →</button>
+</div>
+</div>
 
-        <div class="news-item">
-            <img src="https://share.google/OwX4j00W3YK47gBxn?w=400">
-            <div class="news-text">
-                <h3>IPL 2026 captains and coaches meeting is scheduled to be held on March 25, 2026, in Mumbai.</h3>
-                <p>March 18, 2026 • BCCI</p>
-            </div>
-        </div>
+<!-- NEWS 3 -->
+<div class="news-item" onclick="openNews('news1.html')">
+<img src="https://upload.wikimedia.org/wikipedia/commons/8/84/Cricket_match_in_Mumbai.jpg">
+<div class="news-text">
+<h3>IPL 2026 captains meeting in Mumbai</h3>
+<p>March 25, 2026 • BCCI</p>
+<button>Read more →</button>
+</div>
+</div>
 
-        <div class="news-item">
-            <img src="https://cdn1.wionews.com/prod/wion/images/2026/20260318/image-1773840761928.jpg?rect=(0,0,1200,900)&imwidth=800&imheight=600&format=webp&quality=medium">
-            <div class="news-text">
-                <h3>Ishan Kishan has been appointed as the interim captain of Sunrisers Hyderabad (SRH) for the start of IPL 2026</h3>
-                <p>March 18, SRH Team Update</p>
-            </div>
-        </div>
+<!-- NEWS 4 -->
+<div class="news-item" onclick="openNews('news1.html')">
+<img src="https://upload.wikimedia.org/wikipedia/commons/3/3f/Ishan_Kishan.jpg">
+<div class="news-text">
+<h3>Ishan Kishan becomes SRH captain</h3>
+<p>IPL 2026 • SRH</p>
+<button>Read more →</button>
+</div>
+</div>
 
-    </div>
+</div>
 </div>
 
 <!-- SCRIPT -->
 <script>
+
+function openNews(page){
+    window.location.href = page;
+}
 
 let matches = [
     {type:"live", team:"India vs Australia", score:"India 200/5 (20 overs)"},
