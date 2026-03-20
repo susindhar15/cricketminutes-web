@@ -56,11 +56,7 @@ box-shadow:0 4px 12px rgba(0,0,0,0.08);transition:0.3s;
 
 .card:hover {transform:translateY(-8px) scale(1.03);}
 
-.status {
-font-size:12px;
-color:green;
-margin-top:5px;
-}
+.status {font-size:12px;color:green;margin-top:5px;}
 
 .news-list {display:flex;flex-direction:column;gap:15px;margin-top:20px;}
 
@@ -108,9 +104,8 @@ background:#007bff;color:white;border-radius:5px;cursor:pointer;
 <div class="tabs">
 <button onclick="loadLiveMatches()">Matches</button>
 <button onclick="loadLiveMatches()">Live</button>
-<button>Upcoming</button>
-<button>Results</button>
-
+<button onclick="loadUpcomingMatches()">Upcoming</button>
+<button onclick="loadRecentMatches()">Results</button>
 <button class="refresh-btn" onclick="loadLiveMatches()">🔄 Refresh</button>
 </div>
 
@@ -121,39 +116,11 @@ background:#007bff;color:white;border-radius:5px;cursor:pointer;
 
 <div class="news-list">
 
-</div>
 <div class="news-item" onclick="openNews()">
 <img src="https://upload.wikimedia.org/wikipedia/commons/8/84/Cricket_match_in_Mumbai.jpg">
 <div class="news-text">
 <h3>Shivam Dube joins CSK ahead of IPL 2026</h3>
 <p>March 18, 2026 • BCCI</p>
-<button class="read-btn">Read more →</button>
-</div>
-</div>
-
-<div class="news-item" onclick="openNews()">
-<img src="https://upload.wikimedia.org/wikipedia/commons/1/15/Virat_Kohli.jpg">
-<div class="news-text">
-<h3>Virat Kohli joins RCB ahead of IPL 2026</h3>
-<p>March 18, 2026 • RCB</p>
-<button class="read-btn">Read more →</button>
-</div>
-</div>
-
-<div class="news-item" onclick="openNews()">
-<img src="https://upload.wikimedia.org/wikipedia/commons/8/84/Cricket_match_in_Mumbai.jpg">
-<div class="news-text">
-<h3>IPL 2026 captains meeting in Mumbai</h3>
-<p>March 25, 2026 • BCCI</p>
-<button class="read-btn">Read more →</button>
-</div>
-</div>
-
-<div class="news-item" onclick="openNews()">
-<img src="https://cdn1.wionews.com/prod/wion/images/2026/20260318/image-1773840761928.jpg?rect=(0,0,1200,900)&imwidth=800&imheight=600&format=webp&quality=medium">
-<div class="news-text">
-<h3>Ishan Kishan becomes SRH captain</h3>
-<p>IPL 2026 • SRH</p>
 <button class="read-btn">Read more →</button>
 </div>
 </div>
@@ -167,66 +134,153 @@ function openNews(){
 alert("News page coming soon 🔥");
 }
 
+// 🔴 LIVE
 async function loadLiveMatches() {
+const url = "https://cricbuzz-cricket.p.rapidapi.com/matches/v1/live";
 
-    const url = "https://cricbuzz-cricket.p.rapidapi.com/matches/v1/live";
+const options = {
+method: 'GET',
+headers: {
+'X-RapidAPI-Key': 'cf11d71f53mshb999d223cdb642dp18905djsndea692d9ab75',
+'X-RapidAPI-Host': 'cricbuzz-cricket.p.rapidapi.com'
+}
+};
 
-    const options = {
-        method: 'GET',
-        headers: {
-            'X-RapidAPI-Key': '91c03c31bcmsh550dd8bbe15732dp15e68cjsnbefa65bec9c8',
-            'X-RapidAPI-Host': 'cricbuzz-cricket.p.rapidapi.com'
-        }
-    };
+let container = document.getElementById("matches");
+container.innerHTML = "⏳ Loading live matches...";
 
-    let container = document.getElementById("matches");
-    container.innerHTML = "⏳ Loading live matches...";
+try {
+let res = await fetch(url, options);
+let data = await res.json();
 
-    try {
-        let response = await fetch(url, options);
-        let data = await response.json();
+container.innerHTML = "";
 
-        container.innerHTML = "";
+data.typeMatches.forEach(t => {
+t.seriesMatches.forEach(s => {
+if(s.seriesAdWrapper){
+s.seriesAdWrapper.matches.forEach(m => {
 
-        data.typeMatches.forEach(type => {
-            type.seriesMatches.forEach(series => {
+let t1 = m.matchInfo.team1.teamName;
+let t2 = m.matchInfo.team2.teamName;
+let status = m.matchInfo.status;
 
-                if(series.seriesAdWrapper){
+let score = "Match not started";
 
-                    series.seriesAdWrapper.matches.forEach(match => {
-
-                        let team1 = match.matchInfo.team1.teamName;
-                        let team2 = match.matchInfo.team2.teamName;
-
-                        let score = "Match not started";
-                        let status = match.matchInfo.status;
-
-                        if(match.matchScore && match.matchScore.team1Score){
-                            score =
-                                match.matchScore.team1Score.inngs1.runs + "/" +
-                                match.matchScore.team1Score.inngs1.wickets;
-                        }
-
-                        container.innerHTML += `
-                        <div class="card live">
-                            <p style="color:red;">🔴 LIVE</p>
-                            <h3>${team1} vs ${team2}</h3>
-                            <p>${score}</p>
-                            <p class="status">${status}</p>
-                        </div>
-                        `;
-                    });
-                }
-
-            });
-        });
-
-    } catch (error) {
-        container.innerHTML = "❌ Failed to load matches";
-        console.log(error);
-    }
+if(m.matchScore && m.matchScore.team1Score){
+score = m.matchScore.team1Score.inngs1.runs + "/" +
+m.matchScore.team1Score.inngs1.wickets;
 }
 
+container.innerHTML += `
+<div class="card">
+<p style="color:red;">🔴 LIVE</p>
+<h3>${t1} vs ${t2}</h3>
+<p>${score}</p>
+<p class="status">${status}</p>
+</div>`;
+});
+}
+});
+});
+
+} catch {
+container.innerHTML = "❌ Error loading live matches";
+}
+}
+
+// 🟡 UPCOMING
+async function loadUpcomingMatches() {
+const url = "https://cricbuzz-cricket.p.rapidapi.com/matches/v1/upcoming";
+
+const options = {
+method: 'GET',
+headers: {
+'X-RapidAPI-Key': 'cf11d71f53mshb999d223cdb642dp18905djsndea692d9ab75',
+'X-RapidAPI-Host': 'cricbuzz-cricket.p.rapidapi.com'
+}
+};
+
+let container = document.getElementById("matches");
+container.innerHTML = "⏳ Loading upcoming...";
+
+try {
+let res = await fetch(url, options);
+let data = await res.json();
+
+container.innerHTML = "";
+
+data.typeMatches.forEach(t => {
+t.seriesMatches.forEach(s => {
+if(s.seriesAdWrapper){
+s.seriesAdWrapper.matches.forEach(m => {
+
+let t1 = m.matchInfo.team1.teamName;
+let t2 = m.matchInfo.team2.teamName;
+let date = m.matchInfo.startDate;
+
+container.innerHTML += `
+<div class="card">
+<p style="color:orange;">🟡 UPCOMING</p>
+<h3>${t1} vs ${t2}</h3>
+<p>${new Date(parseInt(date)).toLocaleString()}</p>
+</div>`;
+});
+}
+});
+});
+
+} catch {
+container.innerHTML = "❌ Error loading upcoming";
+}
+}
+
+// 🔵 RESULTS
+async function loadRecentMatches() {
+const url = "https://cricbuzz-cricket.p.rapidapi.com/matches/v1/recent";
+
+const options = {
+method: 'GET',
+headers: {
+'X-RapidAPI-Key': 'cf11d71f53mshb999d223cdb642dp18905djsndea692d9ab75',
+'X-RapidAPI-Host': 'cricbuzz-cricket.p.rapidapi.com'
+}
+};
+
+let container = document.getElementById("matches");
+container.innerHTML = "⏳ Loading results...";
+
+try {
+let res = await fetch(url, options);
+let data = await res.json();
+
+container.innerHTML = "";
+
+data.typeMatches.forEach(t => {
+t.seriesMatches.forEach(s => {
+if(s.seriesAdWrapper){
+s.seriesAdWrapper.matches.forEach(m => {
+
+let t1 = m.matchInfo.team1.teamName;
+let t2 = m.matchInfo.team2.teamName;
+let result = m.matchInfo.status;
+
+container.innerHTML += `
+<div class="card">
+<p style="color:blue;">🔵 RESULT</p>
+<h3>${t1} vs ${t2}</h3>
+<p>${result}</p>
+</div>`;
+});
+}
+});
+});
+
+} catch {
+container.innerHTML = "❌ Error loading results";
+}
+}
+
+// default load
 loadLiveMatches();
 
 </script>
