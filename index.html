@@ -8,6 +8,16 @@
 
 <meta name="description" content="Live cricket scores, news and updates - CricketMinutes">
 
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "CricketMinutes",
+  "url": "https://susindhar15.github.io/cricketminutes-web/",
+  "logo": "https://susindhar15.github.io/cricketminutes-web/logo.png"
+}
+</script>
+
 <style>
 body {margin:0;font-family:Arial;background:#eef2f7;}
 
@@ -41,15 +51,21 @@ cursor:pointer;
 
 .card {
 width:250px;background:white;padding:15px;border-radius:15px;
-box-shadow:0 4px 12px rgba(0,0,0,0.08);
+box-shadow:0 4px 12px rgba(0,0,0,0.08);transition:0.3s;
 }
+
+.card:hover {transform:translateY(-8px) scale(1.03);}
+
+.status {font-size:12px;color:green;margin-top:5px;}
 
 .news-list {display:flex;flex-direction:column;gap:15px;margin-top:20px;}
 
 .news-item {
 display:flex;align-items:center;gap:15px;background:white;
-padding:12px;border-radius:12px;
+padding:12px;border-radius:12px;transition:0.3s;cursor:pointer;
 }
+
+.news-item:hover {transform:scale(1.02);background:#f5f7fb;}
 
 .news-item img {
 width:120px;height:80px;object-fit:cover;border-radius:8px;
@@ -59,17 +75,15 @@ width:120px;height:80px;object-fit:cover;border-radius:8px;
 .news-text p {margin:5px 0 0;font-size:13px;color:gray;}
 
 .read-btn {
-margin-top:5px;
-padding:5px 10px;
-border:none;
-background:#007bff;
-color:white;
-border-radius:5px;
+margin-top:5px;padding:5px 10px;border:none;
+background:#007bff;color:white;border-radius:5px;cursor:pointer;
 }
 
 @media (max-width:768px){
 #matches {flex-direction:column;align-items:center;}
 .card {width:90%;}
+.news-item {flex-direction:column;align-items:flex-start;}
+.news-item img {width:100%;height:150px;}
 }
 </style>
 
@@ -91,18 +105,18 @@ border-radius:5px;
 <button onclick="loadLiveMatches()">Matches</button>
 <button onclick="loadLiveMatches()">Live</button>
 <button onclick="loadUpcomingMatches()">Upcoming</button>
-<button onclick="loadResults()">Results</button>
+<button onclick="loadRecentMatches()">Results</button>
 <button class="refresh-btn" onclick="loadLiveMatches()">🔄 Refresh</button>
 </div>
 
 <div id="matches"></div>
 
-<!-- NEWS -->
 <div style="padding:30px;">
 <h2>📰 Latest Cricket News</h2>
 
 <div class="news-list">
 
+</div>
 <div class="news-item" onclick="openNews()">
 <img src="https://upload.wikimedia.org/wikipedia/commons/8/84/Cricket_match_in_Mumbai.jpg">
 <div class="news-text">
@@ -144,52 +158,157 @@ border-radius:5px;
 
 <script>
 
-// LIVE API
+function openNews(){
+alert("News page coming soon 🔥");
+}
+
+// 🔴 LIVE
 async function loadLiveMatches() {
+const url = "https://cricbuzz-cricket.p.rapidapi.com/matches/v1/live";
+
+const options = {
+method: 'GET',
+headers: {
+'X-RapidAPI-Key': '91c03c31bcmsh550dd8bbe15732dp15e68cjsnbefa65bec9c8',
+'X-RapidAPI-Host': 'cricbuzz-cricket.p.rapidapi.com'
+}
+};
+
 let container = document.getElementById("matches");
-container.innerHTML = "⏳ Loading...";
+container.innerHTML = "⏳ Loading live matches...";
 
 try {
-let res = await fetch("https://api.cricapi.com/v1/currentMatches?apikey=demo&offset=0");
+let res = await fetch(url, options);
 let data = await res.json();
 
 container.innerHTML = "";
 
-data.data.forEach(match => {
+data.typeMatches.forEach(t => {
+t.seriesMatches.forEach(s => {
+if(s.seriesAdWrapper){
+s.seriesAdWrapper.matches.forEach(m => {
+
+let t1 = m.matchInfo.team1.teamName;
+let t2 = m.matchInfo.team2.teamName;
+let status = m.matchInfo.status;
+
+let score = "Match not started";
+
+if(m.matchScore && m.matchScore.team1Score){
+score = m.matchScore.team1Score.inngs1.runs + "/" +
+m.matchScore.team1Score.inngs1.wickets;
+}
+
 container.innerHTML += `
 <div class="card">
 <p style="color:red;">🔴 LIVE</p>
-<h3>${match.name}</h3>
-<p>${match.status}</p>
+<h3>${t1} vs ${t2}</h3>
+<p>${score}</p>
+<p class="status">${status}</p>
 </div>`;
+});
+}
+});
 });
 
 } catch {
-container.innerHTML = "❌ API Error";
+container.innerHTML = "❌ Error loading live matches";
 }
 }
 
-// UPCOMING
-function loadUpcomingMatches(){
-document.getElementById("matches").innerHTML = `
+// 🟡 UPCOMING
+async function loadUpcomingMatches() {
+const url = "https://cricbuzz-cricket.p.rapidapi.com/matches/v1/upcoming";
+
+const options = {
+method: 'GET',
+headers: {
+'X-RapidAPI-Key': '91c03c31bcmsh550dd8bbe15732dp15e68cjsnbefa65bec9c8',
+'X-RapidAPI-Host': 'cricbuzz-cricket.p.rapidapi.com'
+}
+};
+
+let container = document.getElementById("matches");
+container.innerHTML = "⏳ Loading upcoming...";
+
+try {
+let res = await fetch(url, options);
+let data = await res.json();
+
+container.innerHTML = "";
+
+data.typeMatches.forEach(t => {
+t.seriesMatches.forEach(s => {
+if(s.seriesAdWrapper){
+s.seriesAdWrapper.matches.forEach(m => {
+
+let t1 = m.matchInfo.team1.teamName;
+let t2 = m.matchInfo.team2.teamName;
+let date = m.matchInfo.startDate;
+
+container.innerHTML += `
 <div class="card">
 <p style="color:orange;">🟡 UPCOMING</p>
-<h3>India vs South Africa</h3>
-<p>Tomorrow 7:00 PM</p>
+<h3>${t1} vs ${t2}</h3>
+<p>${new Date(parseInt(date)).toLocaleString()}</p>
 </div>`;
+});
+}
+});
+});
+
+} catch {
+container.innerHTML = "❌ Error loading upcoming";
+}
 }
 
-// RESULTS
-function loadResults(){
-document.getElementById("matches").innerHTML = `
+// 🔵 RESULTS
+async function loadRecentMatches() {
+const url = "https://cricbuzz-cricket.p.rapidapi.com/matches/v1/recent";
+
+const options = {
+method: 'GET',
+headers: {
+'X-RapidAPI-Key': '91c03c31bcmsh550dd8bbe15732dp15e68cjsnbefa65bec9c8',
+'X-RapidAPI-Host': 'cricbuzz-cricket.p.rapidapi.com'
+}
+};
+
+let container = document.getElementById("matches");
+container.innerHTML = "⏳ Loading results...";
+
+try {
+let res = await fetch(url, options);
+let data = await res.json();
+
+container.innerHTML = "";
+
+data.typeMatches.forEach(t => {
+t.seriesMatches.forEach(s => {
+if(s.seriesAdWrapper){
+s.seriesAdWrapper.matches.forEach(m => {
+
+let t1 = m.matchInfo.team1.teamName;
+let t2 = m.matchInfo.team2.teamName;
+let result = m.matchInfo.status;
+
+container.innerHTML += `
 <div class="card">
 <p style="color:blue;">🔵 RESULT</p>
-<h3>NZ vs SA</h3>
-<p>NZ won by 68 runs</p>
+<h3>${t1} vs ${t2}</h3>
+<p>${result}</p>
 </div>`;
+});
+}
+});
+});
+
+} catch {
+container.innerHTML = "❌ Error loading results";
+}
 }
 
-// default
+// default load
 loadLiveMatches();
 
 </script>
