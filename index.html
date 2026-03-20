@@ -149,62 +149,64 @@ function openNews(){
 alert("News page coming soon 🔥");
 }
 
-let matches = [
-{type:"live", team:"India vs Australia", score:"India 200/5 (20 overs)"},
-{type:"live", team:"England vs Pakistan", score:"England 150/3 (15 overs)"},
-{type:"upcoming", team:"WI-W vs AUS-W", score:"Tomorrow 4:00 AM"},
-{type:"upcoming", team:"India vs South Africa", score:"Today 7:00 PM"},
-{type:"result", team:"NZ vs SA", score:"NZ won by 68 runs"},
-{type:"result", team:"SA-W vs NZ-W", score:"SA-W won by 18 runs"}
-];
+//  LIVE API CODE
+async function loadLiveMatches() {
 
-let container = document.getElementById("matches");
+    const url = "https://cricbuzz-cricket.p.rapidapi.com/matches/v1/live";
 
-function loadMatches(filter="all") {
-container.innerHTML = "";
+    const options = {
+        method: 'GET',
+        headers: {
+            'X-RapidAPI-Key': '91c03c31bcmsh550dd8bbe15732dp15e68cjsnbefa65bec9c8',
+            'X-RapidAPI-Host': 'cricbuzz-cricket.p.rapidapi.com'
+        }
+    };
 
-matches.forEach(match => {
-if(filter === "all" || match.type === filter){
+    try {
+        let response = await fetch(url, options);
+        let data = await response.json();
 
-let label = "";
-if(match.type === "live") label = "🔴 LIVE";
-if(match.type === "upcoming") label = "UPCOMING";
-if(match.type === "result") label = "RESULT";
+        let container = document.getElementById("matches");
+        container.innerHTML = "";
 
-container.innerHTML += `
-<div class="card ${match.type}">
-<p style="color:${match.type==='live'?'red':'gray'};">${label}</p>
-<h3>${match.team}</h3>
-<p>${match.score}</p>
-</div>`;
+        data.typeMatches.forEach(type => {
+            type.seriesMatches.forEach(series => {
+
+                if(series.seriesAdWrapper){
+
+                    series.seriesAdWrapper.matches.forEach(match => {
+
+                        let team1 = match.matchInfo.team1.teamName;
+                        let team2 = match.matchInfo.team2.teamName;
+
+                        let score = "Match not started";
+
+                        if(match.matchScore && match.matchScore.team1Score){
+                            score =
+                                match.matchScore.team1Score.inngs1.runs + "/" +
+                                match.matchScore.team1Score.inngs1.wickets;
+                        }
+
+                        container.innerHTML += `
+                        <div class="card live">
+                            <p style="color:red;">🔴 LIVE</p>
+                            <h3>${team1} vs ${team2}</h3>
+                            <p>${score}</p>
+                        </div>
+                        `;
+                    });
+                }
+
+            });
+        });
+
+    } catch (error) {
+        console.log("API ERROR:", error);
+    }
 }
-});
-}
 
-function showTab(type){
-loadMatches(type);
-}
-
-function updateLiveScores(){
-let randomScores = [
-"India 180/4 (18 overs)",
-"India 200/5 (20 overs)",
-"Australia 120/3 (12 overs)",
-"England 170/6 (18 overs)"
-];
-
-let liveCards = document.querySelectorAll(".live");
-
-liveCards.forEach(card => {
-let score = card.querySelector("p:last-child");
-let random = Math.floor(Math.random()*randomScores.length);
-score.innerText = randomScores[random];
-});
-}
-
-setInterval(updateLiveScores,3000);
-
-loadMatches();
+// CALL FUNCTION
+loadLiveMatches();
 
 </script>
 
