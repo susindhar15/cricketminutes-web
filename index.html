@@ -125,6 +125,33 @@ background:#007bff;color:white;border-radius:5px;cursor:pointer;
 </div>
 </div>
 
+<div class="news-item" onclick="openNews()">
+<img src="https://upload.wikimedia.org/wikipedia/commons/1/15/Virat_Kohli.jpg">
+<div class="news-text">
+<h3>Virat Kohli joins RCB ahead of IPL 2026</h3>
+<p>March 18, 2026 • RCB</p>
+<button class="read-btn">Read more →</button>
+</div>
+</div>
+
+<div class="news-item" onclick="openNews()">
+<img src="https://upload.wikimedia.org/wikipedia/commons/8/84/Cricket_match_in_Mumbai.jpg">
+<div class="news-text">
+<h3>IPL 2026 captains meeting in Mumbai</h3>
+<p>March 25, 2026 • BCCI</p>
+<button class="read-btn">Read more →</button>
+</div>
+</div>
+
+<div class="news-item" onclick="openNews()">
+<img src="https://cdn1.wionews.com/prod/wion/images/2026/20260318/image-1773840761928.jpg?rect=(0,0,1200,900)&imwidth=800&imheight=600&format=webp&quality=medium">
+<div class="news-text">
+<h3>Ishan Kishan becomes SRH captain</h3>
+<p>IPL 2026 • SRH</p>
+<button class="read-btn">Read more →</button>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -141,7 +168,7 @@ const url = "https://cricbuzz-cricket.p.rapidapi.com/matches/v1/live";
 const options = {
 method: 'GET',
 headers: {
-'X-RapidAPI-Key': 'cf11d71f53mshb999d223cdb642dp18905djsndea692d9ab75',
+'X-RapidAPI-Key': '91c03c31bcmsh550dd8bbe15732dp15e68cjsnbefa65bec9c8',
 'X-RapidAPI-Host': 'cricbuzz-cricket.p.rapidapi.com'
 }
 };
@@ -195,7 +222,7 @@ const url = "https://cricbuzz-cricket.p.rapidapi.com/matches/v1/upcoming";
 const options = {
 method: 'GET',
 headers: {
-'X-RapidAPI-Key': 'cf11d71f53mshb999d223cdb642dp18905djsndea692d9ab75',
+'X-RapidAPI-Key': '91c03c31bcmsh550dd8bbe15732dp15e68cjsnbefa65bec9c8',
 'X-RapidAPI-Host': 'cricbuzz-cricket.p.rapidapi.com'
 }
 };
