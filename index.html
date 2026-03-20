@@ -38,6 +38,15 @@ cursor:pointer;background:white;font-weight:bold;
 
 .tabs button:hover {background:#007bff;color:white;}
 
+.refresh-btn {
+padding:8px 15px;
+background:#28a745;
+color:white;
+border:none;
+border-radius:8px;
+cursor:pointer;
+}
+
 #matches {display:flex;flex-wrap:wrap;gap:15px;padding:20px;}
 
 .card {
@@ -46,6 +55,12 @@ box-shadow:0 4px 12px rgba(0,0,0,0.08);transition:0.3s;
 }
 
 .card:hover {transform:translateY(-8px) scale(1.03);}
+
+.status {
+font-size:12px;
+color:green;
+margin-top:5px;
+}
 
 .news-list {display:flex;flex-direction:column;gap:15px;margin-top:20px;}
 
@@ -91,10 +106,12 @@ background:#007bff;color:white;border-radius:5px;cursor:pointer;
 </div>
 
 <div class="tabs">
-<button onclick="showTab('all')">Matches</button>
-<button onclick="showTab('live')">Live</button>
-<button onclick="showTab('upcoming')">Upcoming</button>
-<button onclick="showTab('result')">Results</button>
+<button onclick="loadLiveMatches()">Matches</button>
+<button onclick="loadLiveMatches()">Live</button>
+<button>Upcoming</button>
+<button>Results</button>
+
+<button class="refresh-btn" onclick="loadLiveMatches()">🔄 Refresh</button>
 </div>
 
 <div id="matches"></div>
@@ -104,6 +121,7 @@ background:#007bff;color:white;border-radius:5px;cursor:pointer;
 
 <div class="news-list">
 
+</div>
 <div class="news-item" onclick="openNews()">
 <img src="https://upload.wikimedia.org/wikipedia/commons/8/84/Cricket_match_in_Mumbai.jpg">
 <div class="news-text">
@@ -149,7 +167,6 @@ function openNews(){
 alert("News page coming soon 🔥");
 }
 
-//  LIVE API CODE
 async function loadLiveMatches() {
 
     const url = "https://cricbuzz-cricket.p.rapidapi.com/matches/v1/live";
@@ -162,11 +179,13 @@ async function loadLiveMatches() {
         }
     };
 
+    let container = document.getElementById("matches");
+    container.innerHTML = "⏳ Loading live matches...";
+
     try {
         let response = await fetch(url, options);
         let data = await response.json();
 
-        let container = document.getElementById("matches");
         container.innerHTML = "";
 
         data.typeMatches.forEach(type => {
@@ -180,6 +199,7 @@ async function loadLiveMatches() {
                         let team2 = match.matchInfo.team2.teamName;
 
                         let score = "Match not started";
+                        let status = match.matchInfo.status;
 
                         if(match.matchScore && match.matchScore.team1Score){
                             score =
@@ -192,6 +212,7 @@ async function loadLiveMatches() {
                             <p style="color:red;">🔴 LIVE</p>
                             <h3>${team1} vs ${team2}</h3>
                             <p>${score}</p>
+                            <p class="status">${status}</p>
                         </div>
                         `;
                     });
@@ -201,11 +222,11 @@ async function loadLiveMatches() {
         });
 
     } catch (error) {
-        console.log("API ERROR:", error);
+        container.innerHTML = "❌ Failed to load matches";
+        console.log(error);
     }
 }
 
-// CALL FUNCTION
 loadLiveMatches();
 
 </script>
